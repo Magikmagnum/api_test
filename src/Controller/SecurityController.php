@@ -9,12 +9,39 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use OpenApi\Annotations as OA;
 
 class SecurityController extends AbstractController
 {
 
     /**
+     * 
      * @Route("/register", name="security_register", methods={"POST"})
+     * 
+     * @OA\Post(
+     *  path="/register",
+     *  tags={"Securities"},
+     *  @OA\RequestBody(
+     *      request="Register",
+     *      description="Corp de la requete",
+     *      required=true,
+     *      @OA\JsonContent(
+     *          @OA\Property(type="string", property="email", example="coucou@exemple.com"),
+     *          @OA\Property(type="string", property="passeword", required=true, example="emileA15ans"),
+     *      )
+     *  ), 
+     * 
+     *  @OA\Response(
+     *      response="200",
+     *      description="Inscription",
+     *      @OA\JsonContent(ref="#/components/schemas/Security"),
+     *  ),
+     * 
+     *  @OA\Response( response="400", ref="#/components/responses/BadRequest" ),
+     *  @OA\Response( response="403", ref="#/components/responses/ForBidden" ),
+     *  @OA\Response( response="404", ref="#/components/responses/NotFound" ),
+     * 
+     * )
      */
     public function register(Request $request, UserPasswordEncoderInterface $encoder, ValidatorInterface $validator)
     {
@@ -42,6 +69,6 @@ class SecurityController extends AbstractController
             $response = $this->statusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        return $this->json($response, $response["status"], []);
+        return $this->json($response, $response["status"], [], ["groups" => "security:new"]);
     }
 }
