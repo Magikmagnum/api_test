@@ -11,7 +11,177 @@
         }
     ],
     "paths": {
-        "/login_check": {
+        "/api/v1/produit": {
+            "get": {
+                "tags": [
+                    "Produits"
+                ],
+                "operationId": "App\\Controller\\ProduitController::index",
+                "responses": {
+                    "200": {
+                        "description": "Liste des produits",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ProduitList"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForBidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Produits"
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/Produit"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ajout d'un produit",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Produit"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForBidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Produits"
+                ],
+                "operationId": "App\\Controller\\ProduitController::delete",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/Success"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForBidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/api/v1/produit/{id}": {
+            "get": {
+                "tags": [
+                    "Produits"
+                ],
+                "operationId": "App\\Controller\\ProduitController::show",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detail du produit",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Produit"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForBidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Produits"
+                ],
+                "operationId": "App\\Controller\\ProduitController::edit",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/Produit"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Modification d'un produit",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Produit"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForBidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/api/v1/login_check": {
             "post": {
                 "tags": [
                     "Securities"
@@ -68,7 +238,7 @@
                 }
             }
         },
-        "/register": {
+        "/api/v1/register": {
             "post": {
                 "tags": [
                     "Securities"
@@ -123,6 +293,35 @@
     },
     "components": {
         "schemas": {
+            "ProduitList": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "nom": {
+                        "type": "string",
+                        "example": "Tomate"
+                    }
+                },
+                "type": "object"
+            },
+            "Produit": {
+                "properties": {
+                    "quantite": {
+                        "type": "integer",
+                        "example": 30
+                    },
+                    "user": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ProduitList"
+                    }
+                ]
+            },
             "Security": {
                 "description": "Inscription à l'API Sentinelle",
                 "properties": {
@@ -135,10 +334,6 @@
                         "example": 5
                     },
                     "email": {
-                        "type": "string",
-                        "example": "coucou@exemple.com"
-                    },
-                    "username": {
                         "type": "string",
                         "example": "coucou@exemple.com"
                     },
@@ -163,6 +358,25 @@
                                 "status": {
                                     "type": "integer",
                                     "example": 404
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "Success": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Requète effectué avec succès"
+                                },
+                                "status": {
+                                    "type": "integer",
+                                    "example": 200
                                 }
                             },
                             "type": "object"
@@ -217,6 +431,29 @@
                 "required": true,
                 "schema": {
                     "type": "integer"
+                }
+            }
+        },
+        "requestBodies": {
+            "Produit": {
+                "required": [
+                    "nom"
+                ],
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "quantite": {
+                                    "type": "integer"
+                                },
+                                "nom": {
+                                    "type": "string",
+                                    "example": "Tomate"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
                 }
             }
         },
