@@ -23,10 +23,20 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ProduitList"
-                                    }
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ProduitList"
+                                            }
+                                        }
+                                    },
+                                    "type": "object",
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Success"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -58,7 +68,18 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Produit"
+                                    "properties": {
+                                        "data": {
+                                            "type": "objet",
+                                            "$ref": "#/components/schemas/Produit"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Created"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -68,37 +89,6 @@
                     },
                     "403": {
                         "$ref": "#/components/responses/ForBidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/NotFound"
-                    }
-                },
-                "security": [
-                    "bearer"
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "Produits"
-                ],
-                "operationId": "App\\Controller\\ProduitController::delete",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/id"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "$ref": "#/components/responses/Success"
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/BadRequest"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/ForBidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/NotFound"
                     }
                 },
                 "security": [
@@ -123,7 +113,18 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Produit"
+                                    "properties": {
+                                        "data": {
+                                            "type": "objet",
+                                            "$ref": "#/components/schemas/Produit"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Success"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -161,7 +162,57 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Produit"
+                                    "properties": {
+                                        "data": {
+                                            "type": "objet",
+                                            "$ref": "#/components/schemas/Produit"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Success"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForBidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Produits"
+                ],
+                "operationId": "App\\Controller\\ProduitController::delete",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Suppression d'un produit",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Success"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -293,6 +344,42 @@
     },
     "components": {
         "schemas": {
+            "Created": {
+                "description": "Created",
+                "properties": {
+                    "status": {
+                        "type": "integer",
+                        "example": 201
+                    },
+                    "error": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Ressource céée avec succès"
+                    }
+                },
+                "type": "object"
+            },
+            "Success": {
+                "description": "Success",
+                "properties": {
+                    "status": {
+                        "type": "integer",
+                        "example": 200
+                    },
+                    "error": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Requète effectué avec succès"
+                    }
+                },
+                "type": "object"
+            },
             "ProduitList": {
                 "properties": {
                     "id": {
@@ -301,18 +388,19 @@
                     "nom": {
                         "type": "string",
                         "example": "Tomate"
+                    },
+                    "quantite": {
+                        "type": "integer",
+                        "example": 30
                     }
                 },
                 "type": "object"
             },
             "Produit": {
                 "properties": {
-                    "quantite": {
-                        "type": "integer",
-                        "example": 30
-                    },
                     "user": {
-                        "type": "string"
+                        "type": "object",
+                        "$ref": "#/components/schemas/User"
                     }
                 },
                 "type": "object",
@@ -325,10 +413,25 @@
             "Security": {
                 "description": "Inscription à l'API Sentinelle",
                 "properties": {
-                    "status": {
-                        "type": "integer",
-                        "example": 200
+                    "data": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/User"
                     },
+                    "message": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Created"
+                    }
+                ]
+            },
+            "User": {
+                "description": "User",
+                "properties": {
                     "id": {
                         "type": "integer",
                         "example": 5
@@ -336,10 +439,6 @@
                     "email": {
                         "type": "string",
                         "example": "coucou@exemple.com"
-                    },
-                    "message": {
-                        "type": "string",
-                        "example": "Ressource céée avec succès"
                     }
                 },
                 "type": "object"
@@ -351,32 +450,17 @@
                     "application/json": {
                         "schema": {
                             "properties": {
-                                "message": {
-                                    "type": "string",
-                                    "example": "Ressource inexistante"
-                                },
                                 "status": {
                                     "type": "integer",
                                     "example": 404
-                                }
-                            },
-                            "type": "object"
-                        }
-                    }
-                }
-            },
-            "Success": {
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "properties": {
+                                },
+                                "error": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
                                 "message": {
                                     "type": "string",
-                                    "example": "Requète effectué avec succès"
-                                },
-                                "status": {
-                                    "type": "integer",
-                                    "example": 200
+                                    "example": "Ressource inexistante"
                                 }
                             },
                             "type": "object"
@@ -389,13 +473,17 @@
                     "application/json": {
                         "schema": {
                             "properties": {
-                                "message": {
-                                    "type": "string",
-                                    "example": "Requète invalide"
-                                },
                                 "status": {
                                     "type": "integer",
                                     "example": 400
+                                },
+                                "error": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Requète invalide"
                                 }
                             },
                             "type": "object"
@@ -408,13 +496,17 @@
                     "application/json": {
                         "schema": {
                             "properties": {
-                                "message": {
-                                    "type": "string",
-                                    "example": "Vous n'avez pas les droits requis pour mener cette action"
-                                },
                                 "status": {
                                     "type": "integer",
                                     "example": 403
+                                },
+                                "error": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Vous n'avez pas les droits requis pour mener cette action"
                                 }
                             },
                             "type": "object"

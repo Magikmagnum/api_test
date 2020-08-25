@@ -31,6 +31,7 @@ class Produit
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Groups("produit:show")
+     * @Groups("produit:list")
      */
     private $quantite;
 

@@ -17,20 +17,32 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *      @OA\Schema(type="integer"),
  * )
  * 
+ * @OA\Schema(
+ *      schema="Created",
+ *      description="Created",
+ *      @OA\Property(property="status", type="integer", example=201),
+ *      @OA\Property(type="boolean", property="error", example=false),
+ *      @OA\Property(property="message", type="string", example="Ressource céée avec succès"),
+ *     
+ * )
+ * 
+ * 
+ * @OA\Schema(
+ *      schema="Success",
+ *      description="Success",
+ *      @OA\Property(property="status", type="integer", example=200),
+ *      @OA\Property(type="boolean", property="error", example=false),
+ *      @OA\Property(property="message", type="string", example="Requète effectué avec succès"),
+ *     
+ * )
+ * 
+ * 
  * @OA\Response(
  *  response="NotFound",
  *  @OA\JsonContent(
+ *      @OA\Property(property="status", type="integer", example=404),
+ *      @OA\Property(type="boolean", property="error", example=true),
  *      @OA\Property(property="message", type="string", example="Ressource inexistante"),
- *      @OA\Property(property="status", type="integer", example=404)
- *  )
- * ),
- * 
- * 
- * @OA\Response(
- *  response="Success",
- *  @OA\JsonContent(
- *      @OA\Property(property="message", type="string", example="Requète effectué avec succès"),
- *      @OA\Property(property="status", type="integer", example=200)
  *  )
  * ),
  * 
@@ -39,8 +51,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @OA\Response(
  *  response="BadRequest",
  *  @OA\JsonContent(
+ *      @OA\Property(property="status", type="integer", example=400),
+ *      @OA\Property(type="boolean", property="error", example=true),
  *      @OA\Property(property="message", type="string", example="Requète invalide"),
- *      @OA\Property(property="status", type="integer", example=400)
  *  )
  * ),
  * 
@@ -49,8 +62,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @OA\Response(
  *  response="ForBidden",
  *  @OA\JsonContent(
+ *      @OA\Property(property="status", type="integer", example=403),
+ *      @OA\Property(type="boolean", property="error", example=true),
  *      @OA\Property(property="message", type="string", example="Vous n'avez pas les droits requis pour mener cette action"),
- *      @OA\Property(property="status", type="integer", example=403)
  *  )
  * ),
  * 

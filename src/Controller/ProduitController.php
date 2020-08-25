@@ -28,8 +28,12 @@ class ProduitController extends AbstractController
      *  @OA\Response(
      *      response="200",
      *      description="Liste des produits",
-     *      @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/ProduitList")),
+     *      @OA\JsonContent(
+     *           allOf={@OA\Schema(ref="#/components/schemas/Success")},
+     *           @OA\Property(type="array", property="data", @OA\Items(ref="#/components/schemas/ProduitList")),
+     *      ),
      *  ),
+     * 
      *  @OA\Response( response="400", ref="#/components/responses/BadRequest" ),
      *  @OA\Response( response="403", ref="#/components/responses/ForBidden" ),
      *  @OA\Response( response="404", ref="#/components/responses/NotFound" ),
@@ -63,7 +67,11 @@ class ProduitController extends AbstractController
      *  @OA\Response(
      *      response="200",
      *      description="Detail du produit",
-     *      @OA\JsonContent(ref="#/components/schemas/Produit"),
+     *      @OA\JsonContent(
+     *           allOf={@OA\Schema(ref="#/components/schemas/Success")},
+     *           @OA\Property(type="objet", property="data", ref="#/components/schemas/Produit"),
+     *      ),
+     *      
      *  ),
      * 
      *  @OA\Response( response="400", ref="#/components/responses/BadRequest" ),
@@ -97,12 +105,14 @@ class ProduitController extends AbstractController
      *  @OA\Response(
      *      response="201",
      *      description="Ajout d'un produit",
-     *      @OA\JsonContent(ref="#/components/schemas/Produit"),
+     *      @OA\JsonContent(
+     *           allOf={@OA\Schema(ref="#/components/schemas/Created")},
+     *           @OA\Property(type="objet", property="data", ref="#/components/schemas/Produit"),
+     *      ),
      *  ),
      * 
      *  @OA\Response( response="400", ref="#/components/responses/BadRequest" ),
      *  @OA\Response( response="403", ref="#/components/responses/ForBidden" ),
-     *  @OA\Response( response="404", ref="#/components/responses/NotFound" ),
      * 
      * )
      */
@@ -110,6 +120,7 @@ class ProduitController extends AbstractController
     {
 
         if ($user = $this->getUser()) {
+
             $response = [
                 "errors" => false,
                 "status" => Response::HTTP_CREATED,
@@ -148,11 +159,15 @@ class ProduitController extends AbstractController
      *  security={"bearer"},
      * 
      *  @OA\Parameter(ref="#/components/parameters/id"),
+     * 
      *  @OA\RequestBody(ref="#/components/requestBodies/Produit"),
      *  @OA\Response(
      *      response="200",
      *      description="Modification d'un produit",
-     *      @OA\JsonContent(ref="#/components/schemas/Produit"),
+     *      @OA\JsonContent(
+     *           allOf={@OA\Schema(ref="#/components/schemas/Success")},
+     *           @OA\Property(type="objet", property="data", ref="#/components/schemas/Produit"),
+     *      ),
      *  ),
      * 
      *  @OA\Response( response="400", ref="#/components/responses/BadRequest" ),
@@ -203,11 +218,20 @@ class ProduitController extends AbstractController
      * 
      *
      * @OA\Delete(
-     *  path="/api/v1/produit",
+     *  path="/api/v1/produit/{id}",
      *  tags={"Produits"},
      *  security={"bearer"},
      * 
      *  @OA\Parameter(ref="#/components/parameters/id"),
+     * 
+     *  @OA\Response(
+     *      response="200",
+     *      description="Suppression d'un produit",
+     *      @OA\JsonContent(
+     *           allOf={@OA\Schema(ref="#/components/schemas/Success")},
+     *      ),
+     *  ),
+     * 
      *  @OA\Response( response="200", ref="#/components/responses/Success" ),
      *  @OA\Response( response="400", ref="#/components/responses/BadRequest" ),
      *  @OA\Response( response="403", ref="#/components/responses/ForBidden" ),

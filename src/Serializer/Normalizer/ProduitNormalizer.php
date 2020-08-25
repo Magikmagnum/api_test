@@ -18,18 +18,16 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
  *  )
  * 
  * @OA\Schema(
- *  schema="ProduitList",
- *  @OA\Property(type="integer", property="id"),
- *  @OA\Property(type="string", property="nom", example="Tomate"),
+ *      schema="ProduitList",
+ *      @OA\Property(type="integer", property="id"),
+ *      @OA\Property(type="string", property="nom", example="Tomate"),
+ *      @OA\Property(type="integer", property="quantite", example=30),
  * )
  * 
  * @OA\Schema(
- *  schema="Produit",
- *  @OA\Property(type="integer", property="quantite", example=30),
- *  @OA\Property(type="string", property="user"),
- *  allOf={
- *      @OA\Schema(ref="#/components/schemas/ProduitList")
- *  },
+ *      schema="Produit",
+ *      allOf={@OA\Schema(ref="#/components/schemas/ProduitList")},
+ *      @OA\Property(type="object", property="user", ref="#/components/schemas/User"),
  * )
  */
 class ProduitNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
