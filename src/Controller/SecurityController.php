@@ -22,7 +22,7 @@ use OpenApi\Annotations as OA;
  *      required=true,
  *      @OA\JsonContent(
  *          @OA\Property(type="string", property="username", example="coucou@exemple.com"),
- *          @OA\Property(type="string", property="passeword", required=true, example="emileA15ans"),
+ *          @OA\Property(type="string", property="password", required=true, example="emileA15ans"),
  *      )
  *  ), 
  * 
@@ -57,7 +57,7 @@ class SecurityController extends AbstractController
      *      required=true,
      *      @OA\JsonContent(
      *          @OA\Property(type="string", property="email", example="coucou@exemple.com"),
-     *          @OA\Property(type="string", property="passeword", required=true, example="emileA15ans"),
+     *          @OA\Property(type="string", property="password", required=true, example="emileA15ans"),
      *      )
      *  ), 
      * 

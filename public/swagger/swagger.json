@@ -249,7 +249,7 @@
                                         "type": "string",
                                         "example": "coucou@exemple.com"
                                     },
-                                    "passeword": {
+                                    "password": {
                                         "required": true,
                                         "type": "string",
                                         "example": "emileA15ans"
@@ -307,7 +307,7 @@
                                         "type": "string",
                                         "example": "coucou@exemple.com"
                                     },
-                                    "passeword": {
+                                    "password": {
                                         "required": true,
                                         "type": "string",
                                         "example": "emileA15ans"
