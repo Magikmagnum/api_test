@@ -118,26 +118,25 @@ class ProduitController extends AbstractController
      */
     public function new(Request $request, ProduitRepository $produitRepository)
     {
-
         if ($user = $this->getUser()) {
-
-            $response = [
-                "errors" => false,
-                "status" => Response::HTTP_CREATED,
-            ];
-
             $data = json_decode($request->getContent());
-
             $produit = new Produit();
-            $produit->setNom($data->nom)
-                ->setQuantite($data->quantite)
-                ->setUser($user);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($produit);
-            $em->flush();
+            if (isset($data->nom)) {
+                isset($data->quantite) ? $quantite = $data->quantite : $quantite = 0;
 
-            $response = $this->statusCode(Response::HTTP_CREATED, $produit);
+                $produit->setNom($data->nom)
+                    ->setQuantite($quantite)
+                    ->setUser($user);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($produit);
+                $em->flush();
+
+                $response = $this->statusCode(Response::HTTP_CREATED, $produit);
+            } else {
+                $response = $this->statusCode(Response::HTTP_BAD_REQUEST, [], "Non du produit est necessaire");
+            }
         } else {
             $response = $this->statusCode(Response::HTTP_UNAUTHORIZED);
         }
@@ -150,8 +149,6 @@ class ProduitController extends AbstractController
     /**
      * @Route("/produit/{id}", name="api_produit_edit", methods={"PUT"})
      * 
-     * 
-     * @Route("/api/v1/produit", name="security_api/v1/produit", methods={"POST"})
      * 
      * @OA\Put(
      *  path="/api/v1/produit/{id}",
@@ -179,7 +176,7 @@ class ProduitController extends AbstractController
     public function edit($id, Request $request, ProduitRepository $produitRepository)
     {
 
-        if ($user = $this->getUser()) {
+        if ($this->getUser()) {
 
             $produit = $produitRepository->find($id);
 
@@ -196,9 +193,8 @@ class ProduitController extends AbstractController
 
             $data = json_decode($request->getContent());
 
-            $produit->setNom($data->nom)
-                ->setQuantite($data->quantite)
-                ->setUser($user);
+            isset($data->nom) &&  $produit->setNom($data->nom);
+            isset($data->quantite) &&  $produit->setQuantite($data->quantite);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($produit);

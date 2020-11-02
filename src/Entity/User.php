@@ -18,8 +18,6 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"security:new"})
-     * @Groups("produit:show")
      */
     private $id;
 

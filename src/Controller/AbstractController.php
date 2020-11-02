@@ -21,8 +21,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *      schema="Created",
  *      description="Created",
  *      @OA\Property(property="status", type="integer", example=201),
- *      @OA\Property(type="boolean", property="error", example=false),
- *      @OA\Property(property="message", type="string", example="Ressource céée avec succès"),
+ *      @OA\Property(type="boolean", property="success", example=true),
+ *      @OA\Property(property="message", type="string", example="Ressource créer avec succès"),
  *     
  * )
  * 
@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *      schema="Success",
  *      description="Success",
  *      @OA\Property(property="status", type="integer", example=200),
- *      @OA\Property(type="boolean", property="error", example=false),
+ *      @OA\Property(type="boolean", property="success", example=true),
  *      @OA\Property(property="message", type="string", example="Requète effectué avec succès"),
  *     
  * )
@@ -41,7 +41,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *  response="NotFound",
  *  @OA\JsonContent(
  *      @OA\Property(property="status", type="integer", example=404),
- *      @OA\Property(type="boolean", property="error", example=true),
+ *      @OA\Property(type="boolean", property="success", example=false),
  *      @OA\Property(property="message", type="string", example="Ressource inexistante"),
  *  )
  * ),
@@ -52,7 +52,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *  response="BadRequest",
  *  @OA\JsonContent(
  *      @OA\Property(property="status", type="integer", example=400),
- *      @OA\Property(type="boolean", property="error", example=true),
+ *      @OA\Property(type="boolean", property="success", example=false),
  *      @OA\Property(property="message", type="string", example="Requète invalide"),
  *  )
  * ),
@@ -63,8 +63,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *  response="ForBidden",
  *  @OA\JsonContent(
  *      @OA\Property(property="status", type="integer", example=403),
- *      @OA\Property(type="boolean", property="error", example=true),
- *      @OA\Property(property="message", type="string", example="Vous n'avez pas les droits requis pour mener cette action"),
+ *      @OA\Property(type="boolean", property="success", example=false),
+ *      @OA\Property(property="message", type="string", example="Vous n'avez pas les droits requis"),
  *  )
  * ),
  * 
@@ -100,48 +100,64 @@ class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abst
     }
 
 
-    public function statusCode($statusCode, $data = [])
+    public function statusCode($statusCode, $data = [], string $message = null)
     {
         switch ($statusCode) {
 
             case Response::HTTP_CREATED:
-                return $this->response(false, $statusCode, $data, 'Ressource céée avec succès');
+
+                $message === null && $message = "Ressource créer avec succès";
+                return $this->response(true, $statusCode, $data, $message);
                 break;
 
             case Response::HTTP_OK:
-                return $this->response(true, $statusCode, $data, 'Requète effectué avec succès');
+
+                $message === null && $message = "Operation reussie";
+                return $this->response(true, $statusCode, $data, $message);
                 break;
 
             case Response::HTTP_BAD_REQUEST:
-                return $this->response(true, $statusCode, $data, 'Requète invalide');
+
+                $message === null && $message = "Requète invalide";
+                return $this->response(false, $statusCode, $data, $message);
                 break;
 
             case Response::HTTP_UNAUTHORIZED:
-                return $this->response(true, $statusCode, $data, "Connectez-vous pour mener cette action");
+
+                $message === null && $message = "Impossible de vous authentifier";
+                return $this->response(false, $statusCode, $data, $message);
                 break;
 
             case Response::HTTP_FORBIDDEN:
-                return $this->response(true, $statusCode, $data, "Vous n'avez pas les droits requis pour mener cette action");
+
+                $message === null && $message = "Vous n'avez pas les droits requis";
+                return $this->response(false, $statusCode, $data, $message);
                 break;
 
             case Response::HTTP_NOT_FOUND:
-                return $this->response(true, $statusCode, $data, 'Ressource inexistante');
+
+                $message === null && $message = "Ressource inexistante";
+                return $this->response(false, $statusCode, $data, $message);
                 break;
 
             case Response::HTTP_NOT_MODIFIED:
-                return $this->response(true, $statusCode, $data, 'Ressource non modifier');
+
+                $message === null && $message = "Ressource non modifier";
+                return $this->response(false, $statusCode, $data, $message);
                 break;
 
 
             case Response::HTTP_UNSUPPORTED_MEDIA_TYPE:
-                return $this->response(true, $statusCode, $data, "Ressource pas supporté");
+
+                $message === null && $message = "Ressource pas supporté";
+                return $this->response(false, $statusCode, $data, $message);
                 break;
         }
     }
 
-    private function response($error, $statusCode, $data = [], $message = null)
+    private function response($success, $statusCode, $data = [], $message = null)
     {
-        $response = ["status" => $statusCode, "errors" => $error];
+        $response = ["status" => $statusCode, "success" => $success];
         $data ? $response["data"] = $data : null;
         $message ? $response["message"] = $message : null;
         return $response;
