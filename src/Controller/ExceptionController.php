@@ -26,7 +26,7 @@ class ExceptionController extends AbstractController
             $response = $this->statusCode(Response::HTTP_FORBIDDEN);
         } else {
             $response = [
-                "errors" => true,
+                "success" => false,
                 "status" => Response::HTTP_INTERNAL_SERVER_ERROR,
                 "message" => $exception->getMessage()
             ];
