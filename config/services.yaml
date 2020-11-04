@@ -56,7 +56,6 @@ services:
                   method: onJWTInvalid,
               }
 
-    services:
     acme_api.event.jwt_expired_listener:
         class: App\EventListener\JWTExpiredListener
         tags:
