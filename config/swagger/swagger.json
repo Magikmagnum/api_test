@@ -1,0 +1,13 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "0.1",
+        "titel": "API Sentinelle"
+    },
+    "servers": [
+        {
+            "url": "http://api.sentinelle.com/v1",
+            "description": "Api de Sentinelle"
+        }
+    ]
+}

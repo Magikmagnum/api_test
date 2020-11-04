@@ -1,0 +1,579 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1",
+        "titel": "API test"
+    },
+    "servers": [
+        {
+            "url": "http://api.test.com/v1",
+            "description": "Aprrendre à créer des Api"
+        }
+    ],
+    "paths": {
+        "/api/v1/produit": {
+            "get": {
+                "tags": [
+                    "Produits"
+                ],
+                "operationId": "App\\Controller\\ProduitController::index",
+                "responses": {
+                    "200": {
+                        "description": "Liste des produits",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ProduitList"
+                                            }
+                                        }
+                                    },
+                                    "type": "object",
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Success"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForBidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Produits"
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/Produit"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ajout d'un produit",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "objet",
+                                            "$ref": "#/components/schemas/Produit"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Created"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForBidden"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/api/v1/produit/{id}": {
+            "get": {
+                "tags": [
+                    "Produits"
+                ],
+                "operationId": "App\\Controller\\ProduitController::show",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detail du produit",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "objet",
+                                            "$ref": "#/components/schemas/Produit"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Success"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForBidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Produits"
+                ],
+                "operationId": "App\\Controller\\ProduitController::edit",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/Produit"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Modification d'un produit",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "objet",
+                                            "$ref": "#/components/schemas/Produit"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Success"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForBidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Produits"
+                ],
+                "operationId": "App\\Controller\\ProduitController::delete",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Suppression d'un produit",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Success"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForBidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/api/v1/login_check": {
+            "post": {
+                "tags": [
+                    "Securities"
+                ],
+                "requestBody": {
+                    "request": "Login",
+                    "description": "Corp de la requete",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "coucou@exemple.com"
+                                    },
+                                    "password": {
+                                        "required": true,
+                                        "type": "string",
+                                        "example": "emileA15ans"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Authentification",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "objet",
+                                            "$ref": "#/components/schemas/Login"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Success"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForBidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        },
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "Securities"
+                ],
+                "operationId": "App\\Controller\\SecurityController::register",
+                "requestBody": {
+                    "request": "Register",
+                    "description": "Corp de la requete",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "coucou@exemple.com"
+                                    },
+                                    "password": {
+                                        "required": true,
+                                        "type": "string",
+                                        "example": "emileA15ans"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Inscription",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Security"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForBidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Created": {
+                "description": "Created",
+                "properties": {
+                    "status": {
+                        "type": "integer",
+                        "example": 201
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Ressource céée avec succès"
+                    }
+                },
+                "type": "object"
+            },
+            "Success": {
+                "description": "Success",
+                "properties": {
+                    "status": {
+                        "type": "integer",
+                        "example": 200
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Requète effectué avec succès"
+                    }
+                },
+                "type": "object"
+            },
+            "ProduitList": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "nom": {
+                        "type": "string",
+                        "example": "Tomate"
+                    },
+                    "quantite": {
+                        "type": "integer",
+                        "example": 30
+                    }
+                },
+                "type": "object"
+            },
+            "Produit": {
+                "properties": {
+                    "user": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/User"
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ProduitList"
+                    }
+                ]
+            },
+            "Security": {
+                "description": "Inscription à l'API Sentinelle",
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Created"
+                    }
+                ]
+            },
+            "Login": {
+                "description": "Authentification à l'API Sentinelle",
+                "properties": {
+                    "token": {
+                        "type": "string",
+                        "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1OTgxNjAyNzMsImV4cCI6MTYwMTc2MDI3Mywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiZXJpY2dhbnNhQGdtYWlsLmNvbSJ9.p14Rf3DamoYkm6JocTMH9kpPL0Qb_WqEeNyxxFLi9NuvDS4hu1qTiFXrDDpDqAMpQnL8D3Xvy4yJnb1j6ji9vnQmoEHfVBzJ3BdS34O07nMdRmriOvN3LTVInSOrLlgbd4NGryfWvfxjd1LGJ86Q9-d87gqg7dop_zWqMLaTAwApRwbR9GLOQ6lv7EW74AmKR_O3xfnUzM2tdlaYZ9Wl02yQtD4qwV0raI9KiPfoDtFamgMPAQ7pc4D_Tz2i3-n0slSGM_S2VwpCZFCGuMAMl4dxOujpk-KLqqdsaU-0YT7aqeZOGKBKo9YII2DrM9TAFYEaSSX5SNhs57NWHyacH8YvzDkuVRwJG6Nq-gck2gPcB6uTogn14dIfZnoGT87fd5vWCfyB9OgLLd17bqqcACSBQoTacXElBvGEtb4VBbtjazDHtkP2Om4AghlwYZkrfDyfLjBojcTQ4zVfTGURNTnJ8zmL33VFShgoKSPi7WDddDav1f44dKkt1K_fTl1R2biVdnUtoTxYmQ3nu0Nyginjnl6tmAddqsNDh8oCapw4aoz3uF1AS8ilsX6r1A-NVW8b9l0Z1Om6AIE4J0f-ShpnUPLjjJ4HurO4hDMwqpKlbaFcj1SIkiNT8rCMYBaMN3NDAABfJfcOI-V9fowfi_fT5X7IKUHOd6ZdwsHauzk"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Created"
+                    }
+                ]
+            },
+            "User": {
+                "description": "User",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "coucou@exemple.com"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "NotFound": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "integer",
+                                    "example": 404
+                                },
+                                "success": {
+                                    "type": "boolean",
+                                    "example": false
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Ressource inexistante"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "BadRequest": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "integer",
+                                    "example": 400
+                                },
+                                "success": {
+                                    "type": "boolean",
+                                    "example": false
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Requète invalide"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "ForBidden": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "integer",
+                                    "example": 403
+                                },
+                                "success": {
+                                    "type": "boolean",
+                                    "example": false
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Vous n'avez pas les droits requis pour mener cette action"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "id": {
+                "name": "id",
+                "in": "path",
+                "description": "ID de la resource",
+                "required": true,
+                "schema": {
+                    "type": "integer"
+                }
+            }
+        },
+        "requestBodies": {
+            "Produit": {
+                "required": [
+                    "nom"
+                ],
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "quantite": {
+                                    "type": "integer"
+                                },
+                                "nom": {
+                                    "type": "string",
+                                    "example": "Tomate"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "apiKey",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
