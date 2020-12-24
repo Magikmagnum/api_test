@@ -15,7 +15,7 @@ class JWTExpiredListener extends AbstractController
      */
     public function onJWTExpired(JWTExpiredEvent $event)
     {
-        $response = new JWTAuthenticationFailureResponse($this->statusCode(Response::HTTP_UNAUTHORIZED, [], "Votre token a expiré, veuillez le renouveler."));
+        $response = new JWTAuthenticationFailureResponse($this->statusCode(Response::HTTP_UNAUTHORIZED, [], "Votre session a expiré, veuillez le renouveler."));
         $event->setResponse($response);
     }
 }

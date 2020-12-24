@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use OpenApi\Annotations as OA;
+use App\Controller\Helpers\CheckHelper;
+use App\Controller\Helpers\ListenerHelper;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -49,6 +51,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * 
  * 
  * @OA\Response(
+ *  response="Unauthorized",
+ *  @OA\JsonContent(
+ *      @OA\Property(property="status", type="integer", example=401),
+ *      @OA\Property(type="boolean", property="success", example=false),
+ *      @OA\Property(property="message", type="string", example="Impossible de vous authentifier"),
+ *  )
+ * ),
+ * 
+ * 
+ * 
+ * @OA\Response(
  *  response="BadRequest",
  *  @OA\JsonContent(
  *      @OA\Property(property="status", type="integer", example=400),
@@ -74,12 +87,26 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
 {
+    protected $check;
+    protected $listener;
+
+
+    public function __construct()
+    {
+        $this->check = new CheckHelper();
+    }
+
+
+
+    public function getChecker()
+    {
+        return $this->check;
+    }
 
     public function getDatime($var = 'now')
     {
         return new \DateTime($var, new \DateTimeZone('Africa/Libreville'));
     }
-
 
     public function getErrors($entity, ValidatorInterface $validator)
     {
@@ -124,19 +151,19 @@ class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abst
 
             case Response::HTTP_UNAUTHORIZED:
 
-                $message === null && $message = "Impossible de vous authentifier";
+                $message === null && $message = "Impossible de vous authentifier, veuillez vous connecter";
                 return $this->response(false, $statusCode, $data, $message);
                 break;
 
             case Response::HTTP_FORBIDDEN:
 
-                $message === null && $message = "Vous n'avez pas les droits requis";
+                $message === null && $message = "Vous n'avez pas les droits requis pour continuer cette action";
                 return $this->response(false, $statusCode, $data, $message);
                 break;
 
             case Response::HTTP_NOT_FOUND:
 
-                $message === null && $message = "Ressource inexistante, vérifier le lien de la requète";
+                $message === null && $message = "Route ou ressource inexistante, vérifier le lien de la requète";
                 return $this->response(false, $statusCode, $data, $message);
                 break;
 

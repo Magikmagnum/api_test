@@ -14,18 +14,15 @@ services:
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: "../src/"
-        exclude:
-            - "../src/DependencyInjection/"
-            - "../src/Entity/"
-            - "../src/Kernel.php"
-            - "../src/Tests/"
+        resource: "../src/*"
+        exclude: "../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}"
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
-        resource: "../src/Controller/"
+        resource: "../src/Controller"
         tags: ["controller.service_arguments"]
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
@@ -46,7 +43,6 @@ services:
                   event: lexik_jwt_authentication.on_authentication_failure,
                   method: onAuthenticationFailureResponse,
               }
-
     acme_api.event.jwt_invalid_listener:
         class: App\EventListener\JWTInvalidListener
         tags:
@@ -55,7 +51,6 @@ services:
                   event: lexik_jwt_authentication.on_jwt_invalid,
                   method: onJWTInvalid,
               }
-
     acme_api.event.jwt_expired_listener:
         class: App\EventListener\JWTExpiredListener
         tags:
@@ -63,4 +58,12 @@ services:
                   name: kernel.event_listener,
                   event: lexik_jwt_authentication.on_jwt_expired,
                   method: onJWTExpired,
+              }
+    acme_api.event.jwt_notfound_listener:
+        class: App\EventListener\JWTNotFoundListener
+        tags:
+            - {
+                  name: kernel.event_listener,
+                  event: lexik_jwt_authentication.on_jwt_not_found,
+                  method: onJWTNotFound,
               }

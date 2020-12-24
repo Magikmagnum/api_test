@@ -16,7 +16,7 @@ class JWTInvalidListener extends AbstractController
      */
     public function onJWTInvalid(JWTInvalidEvent $event)
     {
-        $response = new JWTAuthenticationFailureResponse($this->statusCode(Response::HTTP_UNAUTHORIZED));
+        $response = new JWTAuthenticationFailureResponse($this->statusCode(Response::HTTP_UNAUTHORIZED, [], "Votre token n'est pas valide, veuillez vous reconnecter pour en obtenir un nouveau"));
 
         $event->setResponse($response);
     }

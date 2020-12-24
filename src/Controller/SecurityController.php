@@ -76,8 +76,8 @@ class SecurityController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $encoder, ValidatorInterface $validator)
     {
+        dd("coucou");
         $data = json_decode($request->getContent());
-
         $errors = [];
         isset($data->email) ? null : $errors['email'] = 'Champs Obligatoir';
         isset($data->password) ? null : $errors['password'] = 'Champs Obligatoir';
