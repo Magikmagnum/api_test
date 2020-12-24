@@ -13,27 +13,40 @@ Ce qui est requis pour commencer avec API Produits
 ### Procédure d’installation 
 
 D'abord Avoir git d'installer sur son ordinateur.
-En suite entrez la commande.
-```
+En suite entrez la commande sur votre terminal.
+
 git clone https://github.com/Magikmagnum/api_test.git
-```
 
-
-Installez API produits en exécutant cette commande depuis le terminal
-
-https://github.com/Magikmagnum/api_test.git
-
-Dites ce qu'il faut faire...
-
-_exemple_: Executez la commande ``telnet mapscii.me`` pour commencer ensuite [...]
-
-
-Ensuite vous pouvez montrer ce que vous obtenez au final...
 
 ## Démarrage
 
-Dites comment faire pour lancer votre projet
+Situez vous dans le répertoire de l'API en tapant la commande si dessous 
+```
+cd api_test
+```
+Installer toutes les dépendances en tapant la commande  si dessous
+```
+composer install
+```
+Aller dans le fichier .env à la racine du repertoire de API Produits. A la ligne "DATABASE_URL=mysql:" modifier le db_user, le db_passeword et le db_name. selon les parametres de votre base de donnée.
+```
+###> doctrine/doctrine-bundle ###
+# Format described at https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url
+# For an SQLite database, use: "sqlite:///%kernel.project_dir%/var/data.db"
+# For a PostgreSQL database, use: "postgresql://db_user:db_password@127.0.0.1:5432/db_name?serverVersion=11&charset=utf8"
+# IMPORTANT: You MUST configure your server version, either here or in config/packages/doctrine.yaml
+DATABASE_URL=mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=5.7
+###< doctrine/doctrine-bundle ###
 
+```
+Taper la commande  si dessous, pour initializer base de données.
+```
+php bin/console doctrine:database:create
+```
+Taper la commande  si dessous, pour créer automatiquement toutes les tables de base de données nécessaires.
+```
+php bin/console doctrine:schema:update --force
+```
 ## Fabriqué avec
 
 Entrez les programmes/logiciels/ressources que vous avez utilisé pour développer votre projet
