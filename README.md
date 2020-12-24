@@ -13,7 +13,7 @@ Ce qui est requis pour commencer avec API Produits
 
 ## Procédure d’installation 
 
-D'abord, entrez la commande sur votre terminal.
+D'abord, Allez dans le répertoire vous souhaitez cloner le dépôt et entrez la commande si dessous sur votre terminal.
 ```
 git clone https://github.com/Magikmagnum/api_test.git
 ```
@@ -51,3 +51,4 @@ https://github.com/Magikmagnum/api_test/blob/master/Documentation.pdf
 
 ## License
 Ce projet est sous licence ``licence du MIT``
+Pour tout besoin d'aide, d'assistance ou de report de bug prière de contacter l'équipe technique à l'adresse suivante : ericgansa01@gmail.com
