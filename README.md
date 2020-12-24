@@ -25,7 +25,7 @@ Puis, installer toutes les dépendances en tapant la commande  si dessous
 ```
 composer install
 ```
-Apres, aller dans le fichier .env à la racine du repertoire de API Produits. A la ligne "DATABASE_URL=mysql:" modifier le db_user, le db_passeword et le db_name. selon les parametres de votre base de donnée.
+Apres, aller dans le fichier .env à la racine du repertoire de API Produits. A la ligne 29 "DATABASE_URL=mysql:" modifier le db_user, le db_passeword et le db_name. selon les parametres de votre base de donnée.
 ```
 DATABASE_URL=mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=5.7
 ```
