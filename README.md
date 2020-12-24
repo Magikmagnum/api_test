@@ -43,9 +43,8 @@ Apres l'activation de votre serveur de base de données, taper la commande si de
 php -S 127.0.0.1:8000 -t public
 ```
 ## Lien de la documentation
-```
 https://github.com/Magikmagnum/api_test/blob/master/Documentation.pdf
-```
+
 ## Auteurs
 
 * **Eric Gansa Diambote** _alias_ [@Magikmagnum](https://github.com/Magikmagnum)
