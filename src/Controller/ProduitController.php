@@ -135,7 +135,7 @@ class ProduitController extends AbstractController
 
                 $response = $this->statusCode(Response::HTTP_CREATED, $produit);
             } else {
-                $response = $this->statusCode(Response::HTTP_BAD_REQUEST, [], "Non du produit est necessaire");
+                $response = $this->statusCode(Response::HTTP_BAD_REQUEST, [], "Le nom du produit est necessaire");
             }
         } else {
             $response = $this->statusCode(Response::HTTP_UNAUTHORIZED);
@@ -182,9 +182,9 @@ class ProduitController extends AbstractController
 
             if (!$produit) {
                 $response = [
-                    "errors" => true,
+                    "success" => true,
                     "status" => Response::HTTP_NOT_FOUND,
-                    "message" => "Produit not found"
+                    "message" => "Produit non trouvé"
                 ];
                 return $this->json($response, $response["status"]);
             }

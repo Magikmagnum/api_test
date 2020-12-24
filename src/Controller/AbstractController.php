@@ -136,7 +136,7 @@ class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abst
 
             case Response::HTTP_NOT_FOUND:
 
-                $message === null && $message = "Ressource inexistante";
+                $message === null && $message = "Ressource inexistante, vérifier le lien de la requète";
                 return $this->response(false, $statusCode, $data, $message);
                 break;
 

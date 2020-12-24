@@ -46,9 +46,6 @@
                     },
                     "403": {
                         "$ref": "#/components/responses/ForBidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/NotFound"
                     }
                 },
                 "security": [

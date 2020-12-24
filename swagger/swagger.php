@@ -8,7 +8,7 @@ use OpenApi\Annotations as OA;
  *      version="1",
  * )
  * @OA\Server(
- *      url="http://api.test.com/v1",
+ *      url="http://api.test.com",
  *      description="Aprrendre à créer des Api"
  * )
  */

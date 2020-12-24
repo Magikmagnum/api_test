@@ -20,7 +20,7 @@ class ExceptionController extends AbstractController
             $response = $this->statusCode(Response::HTTP_NOT_FOUND);
         } elseif ($exception instanceof UniqueConstraintViolationException || $exception instanceof \TypeError) {
 
-            $response = $this->statusCode(Response::HTTP_BAD_REQUEST);
+            $response = $this->statusCode(Response::HTTP_BAD_REQUEST, [], "Les donneés que vous souhaitez persister existe deja dans la base de données");
         } elseif ($exception instanceof AccessDeniedException || $exception instanceof AccessDeniedHttpException) {
 
             $response = $this->statusCode(Response::HTTP_FORBIDDEN);

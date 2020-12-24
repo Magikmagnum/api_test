@@ -29,6 +29,8 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
  *      allOf={@OA\Schema(ref="#/components/schemas/ProduitList")},
  *      @OA\Property(type="object", property="user", ref="#/components/schemas/User"),
  * )
+ * 
+ * 
  */
 class ProduitNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
