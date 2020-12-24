@@ -2,7 +2,7 @@
 
 Produits est une API de gestion de stock, créer un but éducatif, qui permet d'abord de renseigner les stocks (entre autres la nature et la quantité). Puis de les administrer.
 
-### Configuration requise
+## Configuration requise
 
 Ce qui est requis pour commencer avec API Produits
 
@@ -10,18 +10,14 @@ Ce qui est requis pour commencer avec API Produits
 - PHP minimum 7.3.1
 - MySQL minimum 5.7.24
 
-### Procédure d’installation 
+## Procédure d’installation 
 
 D'abord Avoir git d'installer sur son ordinateur.
 En suite entrez la commande sur votre terminal.
 ```
 git clone https://github.com/Magikmagnum/api_test.git
 ```
-
-
-## Démarrage
-
-Situez vous dans le répertoire de l'API en tapant la commande si dessous 
+Situez vous dans le répertoire racine de l'API en tapant la commande si dessous 
 ```
 cd api_test
 ```
@@ -41,30 +37,16 @@ Taper la commande  si dessous, pour créer automatiquement toutes les tables de 
 ```
 php bin/console doctrine:schema:update --force
 ```
-## Fabriqué avec
-
-Entrez les programmes/logiciels/ressources que vous avez utilisé pour développer votre projet
-
-_exemples :_
-* [Materialize.css](http://materializecss.com) - Framework CSS (front-end)
-* [Atom](https://atom.io/) - Editeur de textes
-
-## Contributing
-
-Si vous souhaitez contribuer, lisez le fichier [CONTRIBUTING.md](https://example.org) pour savoir comment le faire.
-
-## Versions
-Listez les versions ici 
-_exemple :_
-**Dernière version stable :** 1.0
-Liste des versions : [Cliquer pour afficher](https://github.com/Magikmagnum/api_test/tags)
-_(pour le lien mettez simplement l'URL de votre projets suivi de ``/tags``)_
+## Lancer le serveur
+Apres l'activation de votre serveur Apache (WAMP, NGNIX, ...), taper la commande si dessous, pour lancer le serveur interne de PHP
+```
+php -S 127.0.0.1:8000 -t public
+```
+## Lien de la documentation
 
 ## Auteurs
-Listez le(s) auteur(s) du projet ici !
+
 * **Eric Gansa Diambote** _alias_ [@Magikmagnum](https://github.com/Magikmagnum)
 
-
 ## License
-
 Ce projet est sous licence ``licence du MIT``
