@@ -4,13 +4,14 @@ namespace App\Controller;
 
 use Throwable;
 use App\Entity\Produit;
+use OpenApi\Annotations as OA;
 use App\Repository\ProduitRepository;
 use App\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use OpenApi\Annotations as OA;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 //use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ProduitController extends AbstractController
@@ -42,8 +43,14 @@ class ProduitController extends AbstractController
      */
     public function index(ProduitRepository $produitRepository)
     {
-        if ($data = $produitRepository->findAll()) {
-            $response = $this->statusCode(Response::HTTP_OK, $data);
+        if ($datas = $produitRepository->findAll()) {
+
+            foreach ($datas as $key => $data) {
+
+                $idEncode = $this->idEncode($data->getId());
+                $datas[$key] = $data->setIdt($idEncode);
+            }
+            $response = $this->statusCode(Response::HTTP_OK, $datas);
         } else {
             $response = $this->statusCode(Response::HTTP_NOT_FOUND);
         }
@@ -82,7 +89,11 @@ class ProduitController extends AbstractController
      */
     public function show($id, ProduitRepository $produitRepository)
     {
-        if ($data = $produitRepository->find($id)) {
+        $idDecode = $this->idDecode($id);
+
+        if ($data = $produitRepository->find($idDecode)) {
+            $idEncode = $this->idEncode($data->getId());
+            $data->setIdt($idEncode);
             $response = $this->statusCode(Response::HTTP_OK, $data);
         } else {
             $response = $this->statusCode(Response::HTTP_NOT_FOUND);
@@ -116,34 +127,55 @@ class ProduitController extends AbstractController
      * 
      * )
      */
-    public function new(Request $request, ProduitRepository $produitRepository)
+    public function new(Request $request, ValidatorInterface $validator)
     {
         if ($user = $this->getUser()) {
             $data = json_decode($request->getContent());
-            $produit = new Produit();
+            $errors = [];
 
+            //verification des erreurs nom du produit
             if (isset($data->nom)) {
-                isset($data->quantite) ? $quantite = $data->quantite : $quantite = 0;
+                ctype_alnum($data->nom) ? $nom = $data->nom : $errors[] = ['path' => "nom", 'message' => "Champs invalide"];
+            } else {
+                $errors[] = ['path' => "nom", 'message' => "Champs obligatoir"];
+            }
 
+            //verification des erreurs quantité du produit
+            if (isset($data->quantite)) {
+                is_int($data->quantite) ? $quantite = $data->quantite : $errors[] = ['path' => "quantite", 'message' => "Champs invalide"];
+            } else {
+                $quantite = 0;
+            }
+
+            if (empty($errors)) {
+
+                $produit = new Produit();
                 $produit->setNom($data->nom)
                     ->setQuantite($quantite)
                     ->setUser($user);
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($produit);
-                $em->flush();
+                if (!$errors = $this->check->validateOrm($validator->validate($user), $errors)) {
 
-                $response = $this->statusCode(Response::HTTP_CREATED, $produit);
-            } else {
-                $response = $this->statusCode(Response::HTTP_BAD_REQUEST, [], "Le nom du produit est necessaire");
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($produit);
+                    $em->flush();
+
+                    $idEncode = $this->idEncode($produit->getId());
+                    $produit->setIdt($idEncode);
+
+                    $response = $this->statusCode(Response::HTTP_CREATED, $produit);
+                    return $this->json($response, $response["status"], [], ["groups" => "produit:show"]);
+                }
             }
+            $response = $this->statusCode(Response::HTTP_BAD_REQUEST, $errors);
         } else {
             $response = $this->statusCode(Response::HTTP_UNAUTHORIZED);
         }
-
-
-        return $this->json($response, $response["status"], [], ["groups" => "produit:show"]);
+        return $this->json($response, $response["status"]);
     }
+
+
+
 
 
     /**
@@ -177,8 +209,8 @@ class ProduitController extends AbstractController
     {
 
         if ($this->getUser()) {
-
-            $produit = $produitRepository->find($id);
+            $idDecode = $this->idDecode($id);
+            $produit = $produitRepository->find($idDecode);
 
             if (!$produit) {
                 $response = [
@@ -199,6 +231,9 @@ class ProduitController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($produit);
             $em->flush();
+
+            $idEncode = $this->idEncode($produit->getId());
+            $produit->setIdt($idEncode);
 
             $response = $this->statusCode(Response::HTTP_OK, $produit);
         } else {
@@ -237,7 +272,9 @@ class ProduitController extends AbstractController
      */
     public function delete($id, ProduitRepository $produitRepository)
     {
-        if ($produit = $produitRepository->find($id)) {
+        $idDecode = $this->idDecode($id);
+
+        if ($produit = $produitRepository->find($idDecode)) {
             $this->denyAccessUnlessGranted('DELETE', $produit);
             $em = $this->getDoctrine()->getManager();
             $em->remove($produit);

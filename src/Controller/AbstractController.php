@@ -89,11 +89,15 @@ class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abst
 {
     protected $check;
     protected $listener;
+    protected $prefix;
+    protected $sufix;
 
 
     public function __construct()
     {
         $this->check = new CheckHelper();
+        $this->prefix = "efdjflkxog5f6f@9gds2157b3";
+        $this->sufix = "28d54grg!fv4d5g4eq5v5gvsdf";
     }
 
 
@@ -133,7 +137,7 @@ class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abst
 
             case Response::HTTP_CREATED:
 
-                $message === null && $message = "Ressource créer avec succès";
+                $message === null && $message = "Ressource créee avec succès";
                 return $this->response(true, $statusCode, $data, $message);
                 break;
 
@@ -163,7 +167,7 @@ class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abst
 
             case Response::HTTP_NOT_FOUND:
 
-                $message === null && $message = "Route ou ressource inexistante, vérifier le lien de la requète";
+                $message === null && $message = "Route ou ressource inexistante, vérifier le lien de la requête";
                 return $this->response(false, $statusCode, $data, $message);
                 break;
 
@@ -188,5 +192,17 @@ class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abst
         $data ? $response["data"] = $data : null;
         $message ? $response["message"] = $message : null;
         return $response;
+    }
+
+    protected function idEncode($id)
+    {
+        return $this->prefix . $id . $this->sufix;
+    }
+
+    protected function idDecode($id)
+    {
+        $sansPrefix = substr($id, strlen($this->prefix));
+        $sansSufix = substr($sansPrefix, 0, -strlen($this->sufix));
+        return $sansSufix;
     }
 }

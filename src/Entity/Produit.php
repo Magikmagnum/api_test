@@ -16,15 +16,24 @@ class Produit
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
      * @Groups("produit:list")
      * @Groups("produit:show")
      */
-    private $id;
+    private $idt;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups("produit:list")
      * @Groups("produit:show")
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="alnum",
+     *     message="Champ invalide."
+     * )
      */
     private $nom;
 
@@ -32,13 +41,16 @@ class Produit
      * @ORM\Column(type="integer", nullable=true)
      * @Groups("produit:show")
      * @Groups("produit:list")
+     * @Assert\Type(
+     *     type="integer",
+     *     message="Champ invalide."
+     * )
      */
     private $quantite;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="produits")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("produit:show")
      */
     private $user;
 
@@ -46,6 +58,19 @@ class Produit
     {
         return $this->id;
     }
+
+
+    public function getIdt(): ?string
+    {
+        return $this->idt;
+    }
+
+    public function setIdt(string $id): self
+    {
+        $this->idt = $id;
+        return $this;
+    }
+
 
     public function getNom(): ?string
     {

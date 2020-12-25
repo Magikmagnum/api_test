@@ -78,27 +78,34 @@ class SecurityController extends AbstractController
     {
         $data = json_decode($request->getContent());
         $errors = [];
-        isset($data->email) ? null : $errors['email'] = 'Champs Obligatoir';
-        isset($data->password) ? null : $errors['password'] = 'Champs Obligatoir';
+
+        //verification des erreurs email
+        isset($data->email) ? null : $errors[] = ['path' => "email", 'message' => "Champs obligatoir"];
+
+        //verification des erreur sur le nouveau mot de passe
+        $errorPassword = "Champs obligatoir";
+        if (!isset($data->password) || $errorPassword = $this->check->validatePassword($data->password)) {
+            $errors[] = ['path' => "password", 'message' => $errorPassword];
+        }
+
 
         if (empty($errors)) {
 
             $user = new User();
             $user->setEmail($data->email);
             $user->setRoles(['ROLE_USER']);
-            $user->setPassword($encoder->encodePassword($user, $data->password));
+            $user->setPassword($data->password);
 
-            if (!$response = $this->getErrors($user, $validator)) {
-
+            if (!$errors = $this->check->validateOrm($validator->validate($user), $errors)) {
+                $user->setPassword($encoder->encodePassword($user, $data->password));
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
                 $response = $this->statusCode(Response::HTTP_CREATED, $user);
+                return $this->json($response, $response["status"], [], ["groups" => "security:new"]);
             }
-        } else {
-            $response = $this->statusCode(Response::HTTP_BAD_REQUEST);
         }
-
-        return $this->json($response, $response["status"], [], ["groups" => "security:new"]);
+        $response = $this->statusCode(Response::HTTP_BAD_REQUEST, $errors);
+        return $this->json($response, $response["status"]);
     }
 }

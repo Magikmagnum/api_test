@@ -8,9 +8,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity("email", message="Cette email est déjà utilisée.")
  */
 class User implements UserInterface
 {
@@ -24,7 +27,10 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"security:new"})
-     * @Groups("produit:show")
+     * @Assert\NotBlank 
+     * @Assert\Email(
+     *     message = "Champ invalide."
+     * )
      */
     private $email;
 
@@ -36,6 +42,17 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 60,
+     *      minMessage = "Le mot de passe doit comporter au moins {{ limit }} caractères",
+     *      maxMessage = "Le mot de passe ne doit pas dépasser {{ limit }} caractères"
+     * )
+     * @Assert\Regex(
+     *     pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/",
+     *     message="Au moins 1 Maj, 1 min et 1 chiffre"
+     * )
      */
     private $password;
 
